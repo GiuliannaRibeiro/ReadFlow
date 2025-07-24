@@ -1,0 +1,28 @@
+.card {
+  width: 20vw;
+  min-width: 380px;
+  height: 15vh;
+  margin: 0px 30px 20px 0px;
+  box-shadow: 0 2px 8px #0000001a;
+  border-radius: 12px;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+mat-card-header {
+  margin-bottom: 5px;
+}
+
+mat-card-title {
+  font-weight: 500;
+  font-size: large;
+}
+
+mat-card-subtitle {
+  font-weight: normal;
+  font-size: small;
+}
