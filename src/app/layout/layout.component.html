@@ -1,1 +1,35 @@
 <app-header></app-header>
+
+<main>
+  <div class="container">
+    <app-card
+      [icon]="'add_circle_outline'"
+      [title]="'Reading Goal'"
+      [iconColor]="'#5da73f'"
+    >
+    </app-card>
+    <app-card
+      [icon]="'import_contacts'"
+      [title]="'Currently Reading'"
+      [iconColor]="'#cf4c64'"
+      [subtitle]="'No books in progress'"
+    >
+    </app-card>
+    <app-card
+      [icon]="'done_all'"
+      [title]="'Books Completed'"
+      [iconColor]="'#58cee1'"
+      [subtitle]="'0 pages read'"
+    >
+    </app-card>
+    <app-card
+      [icon]="'grade'"
+      [iconColor]="'#fbd276'"
+      [title]="'Average Rating'"
+      [subtitle]="'From 0 rated books'"
+    >
+    </app-card>
+  </div>
+</main>
+
+<app-footer></app-footer>

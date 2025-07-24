@@ -1,0 +1,11 @@
+main {
+  padding-bottom: 60px;
+}
+
+.container {
+    display: flex;
+    margin: 30px;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
