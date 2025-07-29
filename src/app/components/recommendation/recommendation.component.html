@@ -1,0 +1,13 @@
+<div class="box-title">
+  <mat-icon class="icon">trending_up</mat-icon>
+  <span class="title">Recommendations for you</span>
+  <a class="see-more" href="#">See more +</a>
+</div>
+<div class="recommendations" *ngIf="books">
+  <div class="book-card" *ngFor="let book of books">
+    <img [src]="book.image" alt="Book cover" />
+     <h6 class="book-title">{{ book.title }}</h6>
+    <p class="book-author">{{ book.authors.join(', ') }}</p>
+  </div>
+</div>
+
