@@ -13,7 +13,7 @@ export class GoogleBooksService {
   searchBooks(
     query: string = this.getRandomHighlightQuery(),
     startIndex: number = Math.floor(Math.random() * 40),
-    maxResults: number = 10
+    maxResults: number = 20
   ): Observable<any> {
     const url = `${this.apiUrl}?q=${query}&startIndex=${startIndex}&maxResults=${maxResults}&orderBy=relevance`;
     return this.http.get(url);
