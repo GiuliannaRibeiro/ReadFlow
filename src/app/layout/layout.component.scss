@@ -4,9 +4,15 @@ main {
 }
 
 .container {
-    display: flex;
-    margin-bottom: 15px;
-    flex-direction: row;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+  display: flex;
+  margin-bottom: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+app-card {
+  flex: 1 1 250px;
+  max-width: 300px;
+  min-width: 240px;
 }
