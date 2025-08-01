@@ -1,0 +1,28 @@
+<div class="modal-content">
+  <div class="close-button">
+    <button mat-icon-button mat-dialog-close aria-label="Close dialog">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <img *ngIf="data.image" [src]="data.image" alt="Book cover" class="book-cover" />
+
+  <h2 class="modal-title">{{ data.title }}</h2>
+
+  <p><strong>Author:</strong> {{ data.authors?.join(', ') }}</p>
+  <p><strong>Description:</strong> {{ data.description }}</p>
+  <p><strong>Pages:</strong> {{ data.pageCount }}</p>
+  <p *ngIf="data.categories?.length">
+    <strong>{{ data.categories.length === 1 ? 'Category:' : 'Categories:' }}</strong>
+    {{ data.categories.join(', ') }}
+  </p>
+
+  <div class="modal-actions">
+    <button mat-icon-button color="warn" aria-label="Favorite">
+      <mat-icon>star_border</mat-icon>
+    </button>
+    <button mat-icon-button color="primary" aria-label="Save">
+      <mat-icon>bookmark_border</mat-icon>
+    </button>
+  </div>
+</div>
