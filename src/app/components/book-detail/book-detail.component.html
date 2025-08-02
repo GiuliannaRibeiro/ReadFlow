@@ -9,7 +9,10 @@
 
   <h2 class="modal-title">{{ data.title }}</h2>
 
-  <p><strong>Author:</strong> {{ data.authors?.join(', ') }}</p>
+  <p *ngIf="data.authors?.length">
+    <strong>{{ data.authors.length === 1 ? 'Author:' : 'Authors:' }}</strong> 
+    {{ data.authors?.join(', ') }}
+  </p>
   <p><strong>Description:</strong> {{ data.description }}</p>
   <p><strong>Pages:</strong> {{ data.pageCount }}</p>
   <p *ngIf="data.categories?.length">
