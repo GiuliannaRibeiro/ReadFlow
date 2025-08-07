@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from './header/header.component';
 import { RouterOutlet } from "@angular/router";
 import { FooterComponent } from "./footer/footer.component";
 import { CardComponent } from '../components/card/card.component';
 import { RecommendationComponent } from '../components/recommendation/recommendation.component';
+import { ReadingGoalService } from '../core/services/readingGoal/reading-goal.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-layout',
@@ -12,6 +14,80 @@ import { RecommendationComponent } from '../components/recommendation/recommenda
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit {
+  hasGoal: boolean = false;
+  dataReadingGoal: any = {}
 
+  constructor(private readingGoalService: ReadingGoalService) {}
+
+  ngOnInit(): void {
+    this.getReadingGoal();
+  }
+
+  getReadingGoal() {
+    this.readingGoalService.getReadingGoal().subscribe({
+      next: res => {
+        if (res.length > 0) {
+          this.dataReadingGoal = res[0]; 
+          this.hasGoal = true;
+        } else {
+          this.dataReadingGoal = {};
+          this.hasGoal = false;
+        }
+      },
+      error: error => console.error(error)
+    })
+  }
+
+  get readingGoalTitle(): string {
+    const goal = this.dataReadingGoal?.goal;
+    return goal ? `Reading Goal<br>0/${goal}` : 'Reading Goal';
+  }  
+
+  readingGoal() {
+    Swal.fire({
+      title: "What is your reading goal?",
+      text: "Inform how many pages do you want to read per day",
+      input: 'number',
+      inputValue: this.dataReadingGoal?.goal || '',
+      inputAttributes: {
+        min: '1',
+        step: '1'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      confirmButtonColor: '#704a4a',
+      cancelButtonText: 'Cancel',
+      cancelButtonColor: '#be8a75',
+      inputValidator: (value) => {
+        if (!value || parseInt(value) <= 0) {
+          return 'Please enter a valid number greater than 0';
+        }
+        return null;
+      }
+    }).then(result => {
+      if (result.isConfirmed) {
+        const goal = Number(result.value);
+        if(this.hasGoal) {
+          this.readingGoalService.editReadingGoal(this.dataReadingGoal.id, goal).subscribe({
+            next: res => {
+              this.dataReadingGoal = res;
+            },
+            error: err => console.error(err)
+          })
+        } else {
+          this.readingGoalService.saveReadingGoals(goal).subscribe({
+            next: res => {
+              this.dataReadingGoal = res;
+              this.hasGoal = true;
+            },
+            error: err => console.error(err)
+          })
+        }
+      }
+    });
+  }
+  
+  
+  
 }

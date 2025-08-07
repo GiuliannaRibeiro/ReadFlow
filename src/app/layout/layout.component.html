@@ -4,8 +4,9 @@
   <div class="container">
     <app-card
       [icon]="'add_circle_outline'"
-      [title]="'Reading Goal'"
+      [title]="readingGoalTitle"
       [iconColor]="'#ffa600'"
+      (click)="readingGoal()"
     >
     </app-card>
     <app-card
