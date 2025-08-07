@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { GoogleBooksService } from '../../core/services/google-books.service';
+import { GoogleBooksService } from '../../core/services/googleBooks/google-books.service';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { BookDetailComponent } from '../book-detail/book-detail.component';
