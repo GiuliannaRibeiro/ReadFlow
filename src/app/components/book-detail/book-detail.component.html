@@ -24,8 +24,9 @@
     <button mat-icon-button color="warn" aria-label="Favorite">
       <mat-icon>star_border</mat-icon>
     </button>
-    <button mat-icon-button color="primary" aria-label="Save">
-      <mat-icon>bookmark_border</mat-icon>
-    </button>
-  </div>
-</div>
+    <button mat-icon-button color="primary" aria-label="Save" (click)="toggleBookmark(data.id)">
+      <mat-icon>
+        {{ bookmarkedIds.includes(data.id) ? 'bookmark' : 'bookmark_border' }}
+      </mat-icon>
+    </button>    
+    
