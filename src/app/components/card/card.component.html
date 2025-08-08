@@ -5,6 +5,6 @@
 
   <mat-card-content>
     <mat-card-title [innerHTML]="title"></mat-card-title>
-    <mat-card-subtitle *ngIf="subtitle">{{ subtitle }}</mat-card-subtitle>
+    <mat-card-subtitle *ngIf="subtitle" [innerHTML]="subtitle"></mat-card-subtitle>
   </mat-card-content>
 </mat-card>
