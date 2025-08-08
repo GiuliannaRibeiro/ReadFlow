@@ -17,12 +17,14 @@ import Swal from 'sweetalert2';
 })
 export class LayoutComponent implements OnInit {
   hasGoal: boolean = false;
-  dataReadingGoal: any = {}
+  dataReadingGoal: any = {};
+  dataBooksBookmarked: any = [];
 
   constructor(private readingGoalService: ReadingGoalService, private bookmarkBookService: BookmarkBookService) {}
 
   ngOnInit(): void {
     this.getReadingGoal();
+    this.loadBookmarkedBooks()
   }
 
   getReadingGoal() {
@@ -89,51 +91,54 @@ export class LayoutComponent implements OnInit {
     });
   }
 
-  booksBookmarked(): void {
+  loadBookmarkedBooks(): void {
     this.bookmarkBookService.getBookmarkedBooks().subscribe({
       next: (books) => {
-        if (!books || books.length === 0) {
-          Swal.fire({
-            title: 'No Bookmarked Books',
-            text: 'You have no books saved yet.',
-            icon: 'info',
-            confirmButtonColor: '#704a4a'
-          });
-          return;
-        }
-  
-        const htmlList = `
-          <div style="max-height: 300px; overflow-y: auto; text-align: left;">
-            ${books
-              .map(book => `
-                <div style="margin-bottom: 10px;">
-                  <strong>${book.title || 'Untitled'}</strong><br>
-                  <small>${book.authors?.join(', ') || 'Unknown Author'}</small>
-                </div>
-              `)
-              .join('')}
-          </div>
-        `;
-  
-        Swal.fire({
-          title: 'Your Bookmarked Books',
-          html: htmlList,
-          confirmButtonText: 'Close',
-          confirmButtonColor: '#704a4a',
-          width: 600,
-          scrollbarPadding: false
-        });
+        this.dataBooksBookmarked = books;
       },
       error: (err) => {
         console.error('Error to get bookmarked books:', err);
-        Swal.fire({
-          title: 'Error',
-          text: 'Failed to load bookmarked books.',
-          icon: 'error',
-          confirmButtonColor: '#be8a75'
-        });
       }
     });
   }
+
+  booksBookmarked(): void {
+    if (!this.dataBooksBookmarked || this.dataBooksBookmarked.length === 0) {
+      Swal.fire({
+        title: 'No Bookmarked Books',
+        text: 'You have no books saved yet.',
+        icon: 'info',
+        confirmButtonColor: '#704a4a'
+      });
+      return;
+    }
+
+    const htmlList = `
+      <div style="max-height: 300px; overflow-y: auto; text-align: left;">
+        ${this.dataBooksBookmarked
+          .map((book: { title: any; authors: any[]; }) => `
+            <div style="margin-bottom: 10px;">
+              <strong>${book.title || 'Untitled'}</strong><br>
+              <small>${book.authors?.join(', ') || 'Unknown Author'}</small>
+            </div>
+          `)
+          .join('')}
+      </div>
+    `;
+  
+      Swal.fire({
+        title: 'Your Bookmarked Books',
+        html: htmlList,
+        confirmButtonText: 'Close',
+        confirmButtonColor: '#704a4a',
+        width: 600,
+        scrollbarPadding: false
+      });
+  }
+
+  get booksBookmarkedTitle(): string {
+    const booksBookmarked = this.dataBooksBookmarked;
+    return booksBookmarked ? `You have saved ${booksBookmarked.length} books` : 'You haven’t saved any';
+  }  
   
 }
