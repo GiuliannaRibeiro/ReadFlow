@@ -43,6 +43,7 @@ export class RecommendationComponent implements OnInit {
             'assets/icons/logo-readflow-mini.png';
   
             return {
+              id: item.id,
               title: volume.title,
               authors: volume.authors || ['Unknown Author'],
               description: volume.description || 'No description available',
