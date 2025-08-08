@@ -1,27 +1,57 @@
-# ReadFlow
+# 📚 ReadFlow
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.19.
+**ReadFlow** is a web application built with Angular that allows users to save their favorite books, set daily reading goals, and track progress.  
+The project uses a simulated REST API with JSON Server and follows Angular best practices, featuring a responsive and user-friendly interface.
 
-## Development server
+> ⚠️ **Note**: This project is still under development. New features and improvements are being added progressively.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+## ✅ Features
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Bookmarking System:** Mark and unmark favorite books for quick access  
+- **Saved Books Overview:** Display of bookmarked books with title, author, and cover  
+- **Reading Goal Tracking:** Set a daily reading goal in pages and monitor your progress  
+- **Progress Summary Cards:** Visual dashboard with saved books count and reading statistics  
+- **Interactive Alerts:** User-friendly modals for input and feedback using SweetAlert2  
+- **Mock Backend:** Integration with JSON Server to simulate a RESTful API  
+- **Google Books API Integration:** Book search and detailed information fetched from Google’s official API  
+- **Responsive UI Design:** Mobile-first layout with consistent experience across devices  
+- **Angular Best Practices:** Standalone components, service-based architecture, and modular organization
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## 🛠️ Technologies
 
-## Running unit tests
+- Angular 18
+- TypeScript
+- JSON Server
+- Google Books API
+- SweetAlert2
+- Angular Material
+- RxJS
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+---
 
-## Running end-to-end tests
+## 🚀 Installation & Running
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+1. **Clone the repository**  
+   ```bash
+   git clone https://github.com/GiuliannaRibeiro/ReadFlow.git
+   cd ReadFlow
+   ```
+   
+2. **Install dependencies**  
+   ```bash
+   npm install
+   ```
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+3. **Start the fake API**  
+   ```bash
+   npm run server
+   ```
+   
+4. **Run the Angular application**  
+   ```bash
+   ng serve -o
+   ```
