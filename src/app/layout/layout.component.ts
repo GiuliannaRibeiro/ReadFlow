@@ -4,6 +4,7 @@ import { RouterOutlet } from "@angular/router";
 import { FooterComponent } from "./footer/footer.component";
 import { CardComponent } from '../components/card/card.component';
 import { RecommendationComponent } from '../components/recommendation/recommendation.component';
+import { BookmarkBookService } from '../core/services/bookmark-book/bookmark-book.service';
 import { ReadingGoalService } from '../core/services/readingGoal/reading-goal.service';
 import Swal from 'sweetalert2';
 
@@ -18,7 +19,7 @@ export class LayoutComponent implements OnInit {
   hasGoal: boolean = false;
   dataReadingGoal: any = {}
 
-  constructor(private readingGoalService: ReadingGoalService) {}
+  constructor(private readingGoalService: ReadingGoalService, private bookmarkBookService: BookmarkBookService) {}
 
   ngOnInit(): void {
     this.getReadingGoal();
@@ -87,7 +88,52 @@ export class LayoutComponent implements OnInit {
       }
     });
   }
+
+  booksBookmarked(): void {
+    this.bookmarkBookService.getBookmarkedBooks().subscribe({
+      next: (books) => {
+        if (!books || books.length === 0) {
+          Swal.fire({
+            title: 'No Bookmarked Books',
+            text: 'You have no books saved yet.',
+            icon: 'info',
+            confirmButtonColor: '#704a4a'
+          });
+          return;
+        }
   
+        const htmlList = `
+          <div style="max-height: 300px; overflow-y: auto; text-align: left;">
+            ${books
+              .map(book => `
+                <div style="margin-bottom: 10px;">
+                  <strong>${book.title || 'Untitled'}</strong><br>
+                  <small>${book.authors?.join(', ') || 'Unknown Author'}</small>
+                </div>
+              `)
+              .join('')}
+          </div>
+        `;
   
+        Swal.fire({
+          title: 'Your Bookmarked Books',
+          html: htmlList,
+          confirmButtonText: 'Close',
+          confirmButtonColor: '#704a4a',
+          width: 600,
+          scrollbarPadding: false
+        });
+      },
+      error: (err) => {
+        console.error('Error to get bookmarked books:', err);
+        Swal.fire({
+          title: 'Error',
+          text: 'Failed to load bookmarked books.',
+          icon: 'error',
+          confirmButtonColor: '#be8a75'
+        });
+      }
+    });
+  }
   
 }
