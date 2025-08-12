@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, OnInit } from '@angular/core';
 import { HeaderComponent } from './header/header.component';
 import { RouterOutlet } from "@angular/router";
 import { FooterComponent } from "./footer/footer.component";
@@ -24,7 +24,7 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.getReadingGoal();
-    this.loadBookmarkedBooks()
+    this.bookmarkBookService.getBookmarkedBooks();
   }
 
   getReadingGoal() {
@@ -91,19 +91,9 @@ export class LayoutComponent implements OnInit {
     });
   }
 
-  loadBookmarkedBooks(): void {
-    this.bookmarkBookService.getBookmarkedBooks().subscribe({
-      next: (books) => {
-        this.dataBooksBookmarked = books;
-      },
-      error: (err) => {
-        console.error('Error to get bookmarked books:', err);
-      }
-    });
-  }
-
   booksBookmarked(): void {
-    if (!this.dataBooksBookmarked || this.dataBooksBookmarked.length === 0) {
+    const list = this.bookmarkBookService.bookmarks();
+    if (!list  || list.length === 0) {
       Swal.fire({
         title: 'No Bookmarked Books',
         text: 'You have no books saved yet.',
@@ -115,8 +105,7 @@ export class LayoutComponent implements OnInit {
 
     const htmlList = `
       <div style="max-height: 300px; overflow-y: auto; text-align: left;">
-        ${this.dataBooksBookmarked
-          .map((book: { title: any; authors: any[]; }) => `
+        ${list.map((book: { title: any; authors: any[]; }) => `
             <div style="margin-bottom: 10px;">
               <strong>${book.title || 'Untitled'}</strong><br>
               <small>${book.authors?.join(', ') || 'Unknown Author'}</small>
@@ -136,9 +125,9 @@ export class LayoutComponent implements OnInit {
       });
   }
 
-  get booksBookmarkedTitle(): string {
-    const booksBookmarked = this.dataBooksBookmarked;
-    return booksBookmarked ? `You have saved ${booksBookmarked.length} books` : 'You haven’t saved any';
-  }  
+  booksBookmarkedTitle = computed(() => {
+    const booksBookmarked = this.bookmarkBookService.bookmarks().length;
+    return booksBookmarked ? `You have saved ${booksBookmarked} books` : 'You haven’t saved any';
+  });
   
 }
