@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { BookmarkBookService } from '../../core/services/bookmark-book/bookmark-book.service';
+import { BookmarkedBook } from '../../models/bookmarked-book.model';
 
 @Component({
   selector: 'app-book-detail',
@@ -31,9 +32,9 @@ export class BookDetailComponent implements OnInit{
 
   toggleBookmark(id: string): void {
     const isBookmarked = this.bookmarkedIds.includes(id);
-  
+
     if (isBookmarked) {
-      this.bookmarkBookService.toggleBookmark({ id }, isBookmarked).subscribe({
+      this.bookmarkBookService.toggleBookmark({ id } as any, true).subscribe({
         next: () => {
           this.bookmarkedIds = this.bookmarkedIds.filter((bookId: string) => bookId !== id);
           localStorage.setItem('bookmarkedIds', JSON.stringify(this.bookmarkedIds));
@@ -47,10 +48,10 @@ export class BookDetailComponent implements OnInit{
         id: this.data.id,
         title: this.data.title || 'Untitled',
         authors: this.data.authors || ['Unknown Author'],
-        thumbnail: this.data.image || '',
-      };
-  
-      this.bookmarkBookService.toggleBookmark(bookToSave, isBookmarked).subscribe({
+        image: this.data.image || '',
+      } as BookmarkedBook;
+
+      this.bookmarkBookService.toggleBookmark(bookToSave, false).subscribe({
         next: () => {
           this.bookmarkedIds.push(id);
           localStorage.setItem('bookmarkedIds', JSON.stringify(this.bookmarkedIds));
