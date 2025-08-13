@@ -34,9 +34,9 @@
       [icon]="'alarm'"
       [title]="'Time Spent Reading'"
       [iconColor]="'#ffa600'"
-      [subtitle]="'0 minutes this week'"
+      [subtitle]="readingTimeTitle()"
+      (click)="timeSpentReading()"
     ></app-card>
-
     <app-card
       [icon]="'bookmark_border'"
       [title]="'Books Bookmarked'"
