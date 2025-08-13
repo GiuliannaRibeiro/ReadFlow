@@ -3,4 +3,6 @@ export interface BookmarkedBook {
   title: string;
   authors: string[];
   image?: string;
+  minutesDescription: string;
+  timeSpentSeconds?: number;
 }
