@@ -29,4 +29,31 @@ export class BookmarkBookService {
       );
     }
   }  
+
+  appendReadingTime(id: string, seconds: number) {
+    const book = this.bookmarks().find(b => String(b.id) === String(id));
+    const prevSec = Number(book?.timeSpentSeconds || 0);
+    const totalSec = prevSec + seconds;
+
+    const mm = Math.floor(seconds / 60);
+    const ss = seconds % 60;
+    const stamp = new Date().toLocaleDateString();
+
+    const currentDesc = book?.minutesDescription ?? '';
+    const patch = {
+      description: `${currentDesc}${currentDesc ? '\n' : ''}⏱ Reading: ${mm}m ${ss}s on ${stamp}`,
+      timeSpentSeconds: totalSec,
+      timeSpentMinutes: Math.floor(totalSec / 60)
+    };
+
+    return this.http.patch<BookmarkedBook>(`${this.base_url}/bookmarkBook/${id}`, patch).pipe(
+      tap(updated =>
+        this.bookmarks.update(arr =>
+          arr.map(book => String(book.id) === String(id) ? { ...book, ...updated } : book)
+        )
+      )
+    );
+  }
+
+
 }
