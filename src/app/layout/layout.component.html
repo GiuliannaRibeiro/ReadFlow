@@ -17,17 +17,11 @@
     >
     </app-card>
     <app-card
-      [icon]="'done_all'"
-      [title]="'Books Completed'"
-      [iconColor]="'#ffa600'"
-      [subtitle]="'0 pages read'"
-    >
-    </app-card>
-    <app-card
       [icon]="'star_border'"
-      [iconColor]="'#ffa600'"
       [title]="'Average Rating'"
-      [subtitle]="'From 0 rated books'"
+      [iconColor]="'#ffa600'"
+      [subtitle]="booksRatedTitle()"
+      (click)="booksRated()"
     >
     </app-card>
     <app-card

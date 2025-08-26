@@ -5,13 +5,14 @@ import { FooterComponent } from "./footer/footer.component";
 import { CardComponent } from '../components/card/card.component';
 import { RecommendationComponent } from '../components/recommendation/recommendation.component';
 import { BookmarkBookService } from '../core/services/bookmark-book/bookmark-book.service';
+import { RatingsService } from './../core/services/ratings/ratings.service';
 import { ReadingGoalService } from '../core/services/readingGoal/reading-goal.service';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [HeaderComponent, RouterOutlet, FooterComponent, CardComponent, RecommendationComponent],
+  imports: [HeaderComponent, FooterComponent, CardComponent, RecommendationComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss'
 })
@@ -21,7 +22,11 @@ export class LayoutComponent implements OnInit {
   dataBooksBookmarked: any = [];
   readingTimeTitle!: Signal<string>;
 
-  constructor(private readingGoalService: ReadingGoalService, private bookmarkBookService: BookmarkBookService) {
+  constructor(
+    private readingGoalService: ReadingGoalService, 
+    private bookmarkBookService: BookmarkBookService,
+    private ratingsService: RatingsService
+  ) {
     this.readingTimeTitle = computed(() => {
       const totalSec = this.bookmarkBookService.bookmarks()
         .reduce((sum, b: any) => sum + Number(b.timeSpentSeconds || 0), 0);
@@ -71,7 +76,7 @@ export class LayoutComponent implements OnInit {
   readingGoal() {
     Swal.fire({
       title: "What is your reading goal?",
-      text: "Inform how many pages do you want to read per day",
+      text: "Inform how many books do you want to read",
       input: 'number',
       inputValue: this.dataReadingGoal?.goal || '',
       inputAttributes: {
@@ -144,6 +149,38 @@ export class LayoutComponent implements OnInit {
         width: 600,
         scrollbarPadding: false
       });
+  }
+
+  booksRated(): void {
+    const entries = this.ratingsService.entries();
+    if (!entries.length) {
+      Swal.fire({ title:'No Rated Books', text:'You have no books rated yet.', icon:'info', confirmButtonColor:'#704a4a' });
+      return;
+    }
+  
+    const htmlList = `
+      <div style="max-height:300px; overflow-y:auto; text-align:left;">
+        ${entries.map(([_, e]) => `
+          <div style="margin-bottom:10px;">
+            <strong>${e.title}</strong><br>
+            <small>${e.authors.join(', ')}</small>
+            <div style="margin-top:4px; font-size:18px;">
+              ${Array.from({ length: 5 }).map((_, i) => `
+                <span style="color:${i < e.value ? '#704a4a' : '#ccc'};">★</span>
+              `).join('')}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    Swal.fire({ 
+      title:'Your Rated Books', 
+      html: htmlList, 
+      confirmButtonText:'Close', 
+      confirmButtonColor:'#704a4a', 
+      width:600, 
+      scrollbarPadding:false 
+    });
   }
 
   timeSpentReading(): void {
@@ -284,6 +321,12 @@ export class LayoutComponent implements OnInit {
   booksBookmarkedTitle = computed(() => {
     const booksBookmarked = this.bookmarkBookService.bookmarks().length;
     return booksBookmarked ? `You have saved ${booksBookmarked} books` : 'You haven’t saved any';
+  });
+
+  booksRatedTitle = computed(() => {
+    const map = this.ratingsService.ratingsMap();
+    const booksRated = Object.keys(map).length;
+    return booksRated ? `You have rated ${booksRated} books` : 'You haven’t rated any';
   });
   
 }
