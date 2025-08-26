@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs';
-import { BookmarkedBook } from '../../../models/bookmarked-book.model';
+import { Book } from '../../../models/bookmarked-book.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,26 +9,26 @@ import { BookmarkedBook } from '../../../models/bookmarked-book.model';
 export class BookmarkBookService {
   private base_url: string = 'http://localhost:3000';
 
-  readonly bookmarks = signal<BookmarkedBook[]>([]);
+  readonly bookmarks = signal<Book[]>([]);
 
   constructor(private http: HttpClient) {}
 
   getBookmarkedBooks() {
-    this.http.get<BookmarkedBook[]>(`${this.base_url}/bookmarkBook`)
+    this.http.get<Book[]>(`${this.base_url}/bookmarkBook`)
     .subscribe(list => this.bookmarks.set(list));  
   }  
 
-  toggleBookmark(book: BookmarkedBook, isBookmarked: boolean) {
+  toggleBookmark(book: Book, isBookmarked: boolean) {
     if (isBookmarked) {
       return this.http.delete(`${this.base_url}/bookmarkBook/${book.id}`).pipe(
         tap(() => this.bookmarks.update(arr => arr.filter(b => b.id !== book.id)))
       );
     } else {
-      return this.http.post<BookmarkedBook>(`${this.base_url}/bookmarkBook`, book).pipe(
+      return this.http.post<Book>(`${this.base_url}/bookmarkBook`, book).pipe(
         tap(saved => this.bookmarks.update(arr => [...arr, saved]))
       );
     }
-  }  
+  } 
 
   appendReadingTime(id: string, seconds: number) {
     const book = this.bookmarks().find(b => String(b.id) === String(id));
@@ -46,7 +46,7 @@ export class BookmarkBookService {
       timeSpentMinutes: Math.floor(totalSec / 60)
     };
 
-    return this.http.patch<BookmarkedBook>(`${this.base_url}/bookmarkBook/${id}`, patch).pipe(
+    return this.http.patch<Book>(`${this.base_url}/bookmarkBook/${id}`, patch).pipe(
       tap(updated =>
         this.bookmarks.update(arr =>
           arr.map(book => String(book.id) === String(id) ? { ...book, ...updated } : book)
