@@ -21,9 +21,35 @@
   </p>
 
   <div class="modal-actions">
-    <button mat-icon-button color="warn" aria-label="Favorite">
-      <mat-icon>star_border</mat-icon>
+    <button
+      mat-icon-button
+      color="warn"
+      aria-label="Rate"
+      [matMenuTriggerFor]="ratingMenu">
+      <mat-icon>
+        {{ getRating(data.id) > 0 ? 'star' : 'star_border' }}
+      </mat-icon>
     </button>
+
+    <mat-menu #ratingMenu="matMenu" class="rating-menu">
+    <div class="rating-container">
+      <button
+        mat-icon-button
+        color="warn"
+        aria-label="Rate"
+        *ngFor="let star of stars"
+        (click)="setRating(data, star)">
+        <mat-icon>
+          {{ star <= getRating(data.id) ? 'star' : 'star_border' }}
+        </mat-icon>
+      </button>
+
+      <button mat-stroked-button class="clear-btn" (click)="clearRating(data)">
+        Clear
+      </button>      
+    </div>
+    </mat-menu>
+
     <button mat-icon-button color="primary" aria-label="Save" (click)="toggleBookmark(data.id)">
       <mat-icon>
         {{ bookmarkedIds.includes(data.id) ? 'bookmark' : 'bookmark_border' }}

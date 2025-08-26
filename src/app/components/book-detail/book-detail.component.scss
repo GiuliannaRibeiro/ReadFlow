@@ -56,3 +56,27 @@
   gap: 16px;
   margin-top: 24px;
 }
+
+.rating-container {
+  display: flex;
+  padding: 4px;
+}
+
+.clear-btn {
+  border-color: #ba1a1a !important;
+  color: #ba1a1a !important;
+  font-weight: 600;
+  padding: 6px 20px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background-color: #ba1a1a !important;
+    color: #fff !important;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
