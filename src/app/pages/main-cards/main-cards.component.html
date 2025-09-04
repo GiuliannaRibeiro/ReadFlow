@@ -1,0 +1,43 @@
+<main>
+  <div class="container">
+    <app-card
+      [icon]="'add_circle_outline'"
+      [title]="readingGoalTitle"
+      [iconColor]="'#ffa600'"
+      (click)="readingGoal()"
+    >
+    </app-card>
+    <app-card
+      [icon]="'import_contacts'"
+      [title]="'Currently Reading'"
+      [iconColor]="'#ffa600'"
+      [subtitle]="'No books in progress'"
+    >
+    </app-card>
+    <app-card
+      [icon]="'star_border'"
+      [title]="'Average Rating'"
+      [iconColor]="'#ffa600'"
+      [subtitle]="booksRatedTitle()"
+      (click)="booksRated()"
+    >
+    </app-card>
+    <app-card
+      [icon]="'alarm'"
+      [title]="'Time Spent Reading'"
+      [iconColor]="'#ffa600'"
+      [subtitle]="readingTimeTitle()"
+      (click)="timeSpentReading()"
+    ></app-card>
+    <app-card
+      [icon]="'bookmark_border'"
+      [title]="'Books Bookmarked'"
+      [iconColor]="'#ffa600'"
+      [subtitle]="booksBookmarkedTitle()"
+      (click)="booksBookmarked()"
+    ></app-card>
+  </div>
+  <div class="recommendation">
+    <app-recommendation></app-recommendation>
+  </div>
+</main>
